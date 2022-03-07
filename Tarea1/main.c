@@ -9,18 +9,14 @@ Marzo 6, 2022
 
 #include <stdio.h>
 #include <stdlib.h>
-#include<math.h>
-
-int global, globalInicial = 1000, arreglo[100][2];
-
-void arr_print(int *, int);
-void arr_addnumers(int *, int, int *, int);
+#include <math.h>
 
 void leibniz(int);
 
 int main(int argc, const char *argv[]){
 	int option = 0, n = 0, m = 0;
-	long Long = 1; 
+	int globalInicial[10000];
+	long Long = 1, arr[1000][1000]; 
 	int arra[3] = {1000,10000,1000000};
 	printf("Seleccione el ejercicio a ejecutar\n");
 	printf("1) Memory allocation\n");
@@ -34,17 +30,10 @@ int main(int argc, const char *argv[]){
     	case 1:
     		printf("Tamaño de array original: ");
     		scanf("%d", &n);
-    		int * numeros = (int *) malloc(n * sizeof(int)); // Se reserva la memoria original
-    		int * fin = numeros + n; //Se calcula el tamaño del arreglo y guarda el valor en fin
-    		arr_addnumers(numeros, n, fin, 0);
-    		arr_print(numeros, n);
-    		printf("¿Cuántos numeros nuevos se agregarán?");
-    		scanf("%d", &m);
-    		numeros = (int *) realloc(numeros, (n + m) * sizeof(int)); //Se redimenciona el array n + m
-    		fin = numeros + n + m; //El recalculo del tamaño por ingreso de nuevos elementos
-    		arr_addnumers(numeros, n, fin, 1);
-    		arr_print(numeros, n+m);
-    		free(numeros);
+    		while (1) {
+    			int * numeros = (int *) malloc(n * sizeof(int)); // Se reserva la memoria original
+		        printf("%lx \n", (long)numeros);
+		    }
     		break;
     	case 2:
     		Long = 1;
@@ -54,17 +43,39 @@ int main(int argc, const char *argv[]){
 			}
     		break;
     	case 3:
-
+    		for (int i = 0; i < 20; ++i){
+    			printf("%p\n", &arr[i][0]);
+    		}
+    		printf("\n");
+    		for (int j = 0; j < 20; ++j){
+				printf("%p\n", &arr[0][j]);
+			}
     		break;
     	case 4:
+    		printf("Resultados ---------------------------\n");
     		printf("Variable global ----------------------\n");
-    		printf("Size of % 8ld\n", sizeof(global));
-    		printf("Variable global valor inicial --------\n");
-    		printf("Size of % 8ld\n", sizeof(globalInicial));
-    		printf("Variable en el stack -----------------\n");
-    		printf("Size of  % 8ld\n", sizeof(option));
-    		printf("Arreglos -----------------------------\n");
-    		printf("Size of % 8ld\n", sizeof(arreglo));
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex\n");
+    		printf("16384	16384	0	4295000064	4295032832	100010000\n");
+
+    		printf("Variable global inicializada ----------\n");
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex\n");
+    		printf("16384	16384	0	4295000064	4295032832	100010000\n");
+
+    		printf("Variable en stack ---------------------\n");
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex\n");
+    		printf("16384	16384	0	4295000064	4295032832	100010000\n");
+
+    		printf("Variable en stack inicializada ---------\n");
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex \n");
+    		printf("16384	16384	0	4295000064	4295032832	100010000\n");
+
+    		printf("Array global ----------------------------\n");
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex\n");
+    		printf("16384	49152	0	4295000064	4295065600	100018000\n");
+
+    		printf("Array stack ----------------------------\n");
+    		printf("__TEXT	__DATA	__OBJC	others	dec	hex\n");
+    		printf("16384	16384	0	4295000064	4295032832	100010000\n");
     		break;
     	case 5:
  			for (int i = 0; i < 3; ++i){
@@ -76,25 +87,6 @@ int main(int argc, const char *argv[]){
     		break;
     }
 	return 0;
-}
-
-
-void arr_print(int * numeros, int n){
-    printf("-- Print---------\n");
-    for (int i = 0; i < n; ++i) {
-        printf("%p\n", (void *) &numeros[i]);
-    }
-    printf("\n");
-}
-
-void arr_addnumers(int * numeros, int n, int * fin, int isUpdate){
-	int helper = 0;
-	if (isUpdate == 1) { numeros = numeros + n; }
-    for (int * aux = numeros; aux < fin; ++aux) {
-    	printf("Ingresa numero: ");
-    	scanf("%d", &helper);
-        *aux = helper;
-    }
 }
 
 void leibniz(int n){
