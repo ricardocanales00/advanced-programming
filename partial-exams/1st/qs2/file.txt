@@ -1,0 +1,4 @@
+When you paste a sentence or large text body into the input text window, all formatting such as
+colors and special text effects are removed to properly process the provided text. However, the
+spaces, tabs, new lines and paragraphs are preserved. You can see the words and letters counts
+in real-time as you type or edit the text.
