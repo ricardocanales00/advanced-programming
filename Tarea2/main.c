@@ -6,7 +6,7 @@
 #define OUTPUT "resultado.tga"
 
 // Pregunta 1: ¿Cuántos bytes mide la siguiente estructura?
-// Res: Son 30 bits + padding
+// Res: 30 bits + padding
 
 typedef struct {
    char id_len;                 // ID Field (Number of bytes - max 255)
@@ -24,11 +24,11 @@ typedef struct {
 } targa_header;
 
 // Pregunta 2: En el archivo original se pasaba el parámetro targa_header y lo cambié a pasar un apuntador a targa_header, ¿por qué es mejor así?
-// Res: Ahora apunta a la dirección de memoria de la declaración de header
+// Res: Ahora apunta a la dirección de memoria de la declaración de header, este apunta directamente a la memoria y eficientiza el uso
 
 void writeheader(targa_header *h, FILE *tga) {
 // Pregunta 3: fputc escribe un byte al archivo, ¿cuántos bytes se escriben aquí?
-// Res: 
+// Res: Se escriben en fputc 2 bytes
 
 // Pregunta 4: Compara con el tamaño de la estructura, ¿qué tipo de dato es mejor que int en este caso?
 // Res: short int
@@ -38,7 +38,7 @@ void writeheader(targa_header *h, FILE *tga) {
    fputc(h->img_type, tga);
 
 // Pregunta 5: La operación % y / qué hacen y ¿por qué crees que se apliquen aquí? Tip: https://en.wikipedia.org/wiki/Endianness
-// Res: 
+// Res: Se está imprimiendo dentro del seguno, acorde a esto es que se asignan por entero dos de los bits
    fputc(h->map_first % 256, tga); // Write integer, low order byte first
    fputc(h->map_first / 256, tga); // Write second byte of integer, high order
    fputc(h->map_len % 256, tga);   // Another integer 
@@ -63,7 +63,7 @@ void readheader(targa_header *h, FILE *tga) {
    h->img_type = fgetc(tga);
    
 // Pregunta 6: ¿Qué hace la siguiente operación? - compara con la pregunta 5.
-// Res: 
+// Res: Se gestiona la estructura para poder incluir lo que se agrega de la nueva imagen
    h->map_first = fgetc(tga) + fgetc(tga)*256; 
    h->map_len = fgetc(tga) + fgetc(tga)*256;   // Another integer 
    h->map_entry_size = fgetc(tga);  // Write a char - only one byte
@@ -109,7 +109,7 @@ int main(void) {
 	// 2D iteration
    for(y = 0; y < header.height; y++)
       for(x = 0; x < header.width; x++) {
-        char r, g, b, average;
+        unsigned char r, g, b, average, lightness, luminossity;
         
         // Components for red, gree, and blue (inverted in targa)
         b = data[(y * header.width + x)*3 + 0];
@@ -117,9 +117,12 @@ int main(void) {
         r = data[(y * header.width + x)*3 + 2];
         
         /* Aquí modificar los valores de r, g, b */
+
         
-        // Algoritmo 1:
-        // Algoritmo 2:
+        // Algoritmo 1: lightness (max(R, G, B) + min(R, G, B)) / 2.
+        lightness = (max(max(r,g),b)+min(min(r,g),b))/2;
+        // Algoritmo 2: luminosity 0.21 R + 0.72 G + 0.07 B.  
+        luminossity = r*0.21 + g*0.72 + b*0.07;
         // Algoritmo 3:
         average = (r+g+b)/3;
         

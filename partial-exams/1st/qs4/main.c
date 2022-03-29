@@ -26,20 +26,18 @@ unsigned int what(unsigned int num) {
         // se hace shift el valor de num 4 posciones a la derecha
         num >>= 4;
     }
-
-// 2. ¿Cuál sería el máximo número valor que puede tomar result?128
     return result;
 }
  
 
 int main() {
-    //printf("%d\n", what(31));
-    //printf("%d\n", what(64));
-    //printf("%d\n", what(127));
-    //printf("%d\n", what(256));
-    //printf("%d\n", what(511));
-    //printf("%d\n", what(1024));
-    printf("%d\n", what(10993));
-    //printf("%d\n", what(4096));
+    printf("%d\n", what(31));
+    printf("%d\n", what(64));
+    printf("%d\n", what(127));
+    printf("%d\n", what(256));
+    printf("%d\n", what(511));
+    printf("%d\n", what(1024));
+    printf("%d\n", what(2047));
+    printf("%d\n", what(4096));
 
 }
