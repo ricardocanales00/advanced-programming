@@ -1,0 +1,31 @@
+Mexico City|	9230.00
+Jalisco|	8382.60
+Veracruz|	8104.80
+Puebla|	6625.70
+Guanajuato|	6199.10
+Nuevo Leon|	5856.70
+Chiapas|	5587.40
+Michoacan|	4793.90
+Oaxaca|	4167.40
+Baja California|	3783.60
+Chihuahua|	3764
+Guerrero|	3558.70
+Tamaulipas|	3531.40
+Coahuila|	3170.30
+Hidalgo|	3094.70
+Sinaloa|	3041.70
+Sonora|	2957.60
+San Luis Potosi|	2833.30
+Tabasco|	2415.80
+Queretaro|	2395.50
+Yucatan|	2337.80
+Morelos|	1976.10
+Quintana Roo|	1880.50
+Durango|	1849.30
+Zacatecas|	1629.30
+Aguascalientes|	1435.10
+Tlaxcala|	1350
+Nayarit|	1238.50
+Campeche|	934.60
+Baja California Sur|	809.50
+Colima|	734.40
