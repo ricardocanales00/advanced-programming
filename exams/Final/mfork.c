@@ -19,6 +19,7 @@ int main() {
     if(!fork()) {
         if(!fork()) {
             char_por_char("Hola, soy el proceso nieto\n");
+            wait(1);
         }
     }
     char_por_char("Adios, soy el proceso padre\n");
