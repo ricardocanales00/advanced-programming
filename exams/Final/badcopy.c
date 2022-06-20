@@ -10,12 +10,16 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    fin = fopen(argv[1], "r");
-    fout = fopen(argv[2], "w");
+    fin = fopen(argv[1], "rb");
+    fout = fopen(argv[2], "wb");
+
 
     while(1) {
-        fgets(buffer, 128, fin);
+
+    //size/64
+      fread(buffer, 128, fin);
         if(feof(fin)) break;
+
         fputs(buffer, fout);
     }
 }
