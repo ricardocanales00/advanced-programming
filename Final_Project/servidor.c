@@ -14,52 +14,50 @@
 #define PORT 8000
 #define SIZE 8
 #define MSGSIZE 1024
-#define FILE_TO_SEND "logo-tec.png"
+#define FILE_TO_SEND "big-ben.png"
 
 
 
 void serve(int s) {
     char buffer[MSGSIZE];
-    int size, i=0;
+    int size, i=0, index;
     struct stat buf;
-    
-    //breakers
-    const char space[2] = " ";
-    const char dot[2] = ".";
+    char *token;
 
+    char *tokensec;
+
+    //ruta asignada
+    char cRuta[200];
+    char cTipo[200];
+    
+    char type[50];
+    
     FILE *sin = fdopen(s, "r");
     FILE *sout = fdopen(s, "w");
-	
-	//Token
-	char *tokenSpace;
-	char *tokenDot;
-	
-	//route & type
-	char routeT[200]; // used for strtok.
-	char route[200];
-	char type[50];
 	
     // Reads the request from the client
     while( fgets(buffer, MSGSIZE, sin) != NULL ) {
         printf("%d - [%s]\n", ++i, buffer);
+
         if(i == 1){
-        	int index = 1;
-        	//Parse 
-        	tokenSpace = strtok(buffer, space);
-        	while (tokenSpace != NULL){
+        	index = 1;
+        	token = strtok(buffer, " ");
+
+        	while (token != NULL){
         		if (index == 2){
-        			strcpy(routeT, tokenSpace+1);
-        			strcpy(route, tokenSpace+1);
+        			strcpy(type, token+1);
+        			strcpy(route, token+1);
 				}
-			index++;
-        		tokenSpace = strtok(NULL,space);
+        		token = strtok(NULL," ");
+                index = index + 1;
 			}
-			tokenDot = strtok(routeT, dot);
-			while (tokenDot != NULL){
-				strcpy(type, tokenDot);
-				tokenDot = strtok(NULL, dot);
-			}	
+			tokensec = strtok(type, dot);
+			while (tokensec != NULL){
+				strcpy(type, tokensec);
+				tokensec = strtok(NULL, ".");
+			}
 		}
+        
         // A blank line is found -> end of headers
         if(buffer[0] == '\r' && buffer[1] == '\n') {
             break;
@@ -73,18 +71,22 @@ void serve(int s) {
 
     sprintf(buffer, "Date: Fri, 31 Dec 1999 23:59:59 GMT\r\n");
     fputs(buffer, sout);
-    
+
+    /*Validacion de tipo de ruta
+
+    Validación de sitio html
+    */
     if (strcmp(type,"html") == 0){
     	sprintf(buffer, "Content-Type: text/html\r\n");
     	fputs(buffer, sout);	
 	}
-	
+	//validación de imagenes
 	else if(strcmp(type,"png") == 0){
 		sprintf(buffer, "Content-Type: image/png\r\n");
     	fputs(buffer, sout);
 	}
 
-    stat(route, &buf);
+    stat(ruta, &buf);
     printf("Size -----------> %d\n", (int)buf.st_size);
 
     sprintf(buffer, "Content-Length: %d\r\n", (int)buf.st_size);
@@ -93,7 +95,7 @@ void serve(int s) {
     sprintf(buffer, "\r\n");
     fputs(buffer, sout);
 
-    FILE *fin = fopen(route, "r");
+    FILE *fin = fopen(ruta, "r");
     while ( (size = fread(buffer, 1, MSGSIZE, fin)) != 0) {
         size = fwrite(buffer, 1, size, sout);
     }
