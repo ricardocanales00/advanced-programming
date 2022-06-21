@@ -41,8 +41,10 @@ void serve(int s) {
 
         if(i == 1){
         	index = 1;
+            //creates strtok using buffer
         	token = strtok(buffer, " ");
 
+            //validates token is not null
         	while (token != NULL){
         		if (index == 2){
         			strcpy(type, token+1);
@@ -51,13 +53,17 @@ void serve(int s) {
         		token = strtok(NULL," ");
                 index = index + 1;
 			}
+
+            //creates secondary token
 			tokensec = strtok(type, dot);
+
+            //Validates secondary token is not null
 			while (tokensec != NULL){
 				strcpy(type, tokensec);
 				tokensec = strtok(NULL, ".");
 			}
 		}
-        
+
         // A blank line is found -> end of headers
         if(buffer[0] == '\r' && buffer[1] == '\n') {
             break;
@@ -79,12 +85,13 @@ void serve(int s) {
     if (strcmp(type,"html") == 0){
     	sprintf(buffer, "Content-Type: text/html\r\n");
     	fputs(buffer, sout);	
-	}
-	//validación de imagenes
-	else if(strcmp(type,"png") == 0){
+	} else if(strcmp(type,"png") == 0){
+        //validación de imagenes
 		sprintf(buffer, "Content-Type: image/png\r\n");
     	fputs(buffer, sout);
-	}
+	} else {
+        break;
+    }
 
     stat(ruta, &buf);
     printf("Size -----------> %d\n", (int)buf.st_size);
